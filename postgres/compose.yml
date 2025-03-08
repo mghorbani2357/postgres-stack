@@ -15,7 +15,7 @@ services:
       org.label-schema.group: "postgres"
 
   postgres_exporter:
-    image: wrouesnel/postgres-exporter:latest
+    image: bitnami/postgres-exporter:latest
     container_name: postgres_exporter
     restart: unless-stopped
     user: "0:0"

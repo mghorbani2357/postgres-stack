@@ -25,7 +25,7 @@ services:
       org.label-schema.group: "postgres"
 
   pgpool_exporter:
-    image: taharaydin/pgpool2_exporter:latest
+    image: pgpool/pgpool2_exporter:latest
     container_name: pgpool_exporter
     restart: unless-stopped
     user: "0:0"
