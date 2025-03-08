@@ -12,6 +12,8 @@ services:
       PGPOOL_ENABLE_LOG_CONNECTIONS: "true"
       PGPOOL_ENABLE_LOG_STATEMENT: "true"
       PGPOOL_ENABLE_POOL_PASSWD: "true"
+    networks:
+      - pg_network
     volumes:
       - ./data:/var/lib/pgpool
       - ./pgpool.conf:/opt/bitnami/pgpool/conf/pgpool.conf
@@ -32,6 +34,8 @@ services:
       PGPOOL_PORT: 9999
       PGPOOL_USERNAME: ${POSTGRES_USER}
       PGPOOL_PASSWORD: ${POSTGRES_PASSWORD}
+    networks:
+      - pg_network
     ports:
       - "9719:9719"
     depends_on:

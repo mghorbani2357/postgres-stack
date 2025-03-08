@@ -1,0 +1,37 @@
+networks:
+  pg_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.10.1.0/24
+          gateway: 10.10.1.1
+services:
+  postgres:
+    extends:
+      file: ./postgres/compose.yml
+      service: postgres
+
+  postgres_exporter:
+    extends:
+      file: ./postgres/compose.yml
+      service: postgres_exporter
+
+  pgpool:
+    extends:
+      file: ./pgpool/compose.yml
+      service: pgpool
+
+  pgpool_exporter:
+    extends:
+      file: ./pgpool/compose.yml
+      service: pgpool_exporter
+
+  pgbouncer:
+    extends:
+      file: ./pgbouncer/compose.yml
+      service: pgbouncer
+
+  pgbouncer_exporter:
+    extends:
+      file: ./pgbouncer/compose.yml
+      service: pgbouncer_exporter

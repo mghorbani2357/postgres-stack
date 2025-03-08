@@ -1,0 +1,30 @@
+services:
+  pgbouncer:
+    image: edoburu/pgbouncer:latest
+    container_name: pgbouncer
+    environment:
+      DB_USER: ${POSTGRES_USER?}
+      DB_PASSWORD: ${POSTGRES_PASSWORD?}
+      DB_HOST: pgpool
+      DB_PORT: 5432
+    ports:
+      - "6432:6432"  # Expose PgBouncer on port 6432
+    volumes:
+      - ./pgbouncer.ini:/etc/pgbouncer/pgbouncer.ini
+      - ./userlist.txt:/etc/pgbouncer/userlist.txt
+    depends_on:
+      - pgpool
+    networks:
+      - pg_network
+
+  pgbouncer_exporter:
+    image: wrouesnel/postgres_exporter
+    container_name: pgbouncer_exporter
+    environment:
+      DATA_SOURCE_NAME: postgresql://${POSTGRES_USER?}:${POSTGRES_PASSWORD?}@pgbouncer:6432/pgbouncer
+    ports:
+      - "9187:9187"  # Expose the metrics endpoint
+    depends_on:
+      - pgbouncer
+    networks:
+      - pg_network
