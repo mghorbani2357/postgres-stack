@@ -1,0 +1,31 @@
+services:
+  postgres:
+    image: postgres:${POSTGRES_VERSTION?}
+    container_name: postgres
+    restart: unless-stopped
+    user: "0:0"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER?}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD?}
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    networks:
+      - pg_network
+    labels:
+      org.label-schema.group: "postgres"
+
+  postgres_exporter:
+    image: wrouesnel/postgres-exporter:latest
+    container_name: postgres_exporter
+    restart: unless-stopped
+    user: "0:0"
+    depends_on:
+      - postgres
+    environment:
+      DATA_SOURCE_NAME: "postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}?sslmode=disable"
+    networks:
+      - pg_network
+    ports:
+      - "9187:9187"
+    labels:
+      org.label-schema.group: "postgres"

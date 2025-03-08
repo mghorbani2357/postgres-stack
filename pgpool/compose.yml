@@ -1,0 +1,40 @@
+services:
+  pgpool:
+    image: bitnami/pgpool:latest
+    container_name: pgpool
+    restart: unless-stopped
+    user: "0:0"
+    environment:
+      PGPOOL_BACKEND_NODES: "0:postgres:5432"
+      PGPOOL_POSTGRES_USERNAME: ${POSTGRES_USER}
+      PGPOOL_POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      PGPOOL_ENABLE_LOAD_BALANCING: "true"
+      PGPOOL_ENABLE_LOG_CONNECTIONS: "true"
+      PGPOOL_ENABLE_LOG_STATEMENT: "true"
+      PGPOOL_ENABLE_POOL_PASSWD: "true"
+    volumes:
+      - ./data:/var/lib/pgpool
+      - ./pgpool.conf:/opt/bitnami/pgpool/conf/pgpool.conf
+      - ./pool_hba.conf:/opt/bitnami/pgpool/conf/pool_hba.conf
+      - ./pool_passwd:/opt/bitnami/pgpool/conf/pool_passwd
+    depends_on:
+      - postgres
+    labels:
+      org.label-schema.group: "postgres"
+
+  pgpool_exporter:
+    image: taharaydin/pgpool2_exporter:latest
+    container_name: pgpool_exporter
+    restart: unless-stopped
+    user: "0:0"
+    environment:
+      PGPOOL_HOST: pgpool
+      PGPOOL_PORT: 9999
+      PGPOOL_USERNAME: ${POSTGRES_USER}
+      PGPOOL_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "9719:9719"
+    depends_on:
+      - pgpool
+    labels:
+      org.label-schema.group: "postgres"
