@@ -1,6 +1,6 @@
 services:
   pgpool:
-    image: bitnami/pgpool:latest
+    image: bitnami/pgpool:${PGPOOL_VERSION?}
     container_name: pgpool
     restart: unless-stopped
     user: "0:0"

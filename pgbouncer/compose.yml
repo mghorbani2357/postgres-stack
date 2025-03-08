@@ -1,6 +1,6 @@
 services:
   pgbouncer:
-    image: edoburu/pgbouncer:latest
+    image: edoburu/pgbouncer:${PGBOUNCER_VERSION?}
     container_name: pgbouncer
     environment:
       DB_USER: ${POSTGRES_USER?}
