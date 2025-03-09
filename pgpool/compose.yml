@@ -12,13 +12,21 @@ services:
       PGPOOL_ENABLE_LOG_CONNECTIONS: "true"
       PGPOOL_ENABLE_LOG_STATEMENT: "true"
       PGPOOL_ENABLE_POOL_PASSWD: "true"
+#      PGPOOL_SR_CHECK_USER: repmgr
+#      PGPOOL_SR_CHECK_PASSWORD: repmgrpassword
+#      PGPOOL_ADMIN_USERNAME: admin
+#      PGPOOL_ADMIN_PASSWORD: adminpassword
+#      PGPOOL_POSTGRES_CUSTOM_USERS: customuser
+#      PGPOOL_POSTGRES_CUSTOM_PASSWORDS: custompassword
+    healthcheck:
+      test: ["CMD", "/opt/bitnami/scripts/pgpool/healthcheck.sh"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
     networks:
       - pg_network
     volumes:
       - ./data:/var/lib/pgpool
-      - ./pgpool.conf:/opt/bitnami/pgpool/conf/pgpool.conf
-      - ./pool_hba.conf:/opt/bitnami/pgpool/conf/pool_hba.conf
-      - ./pool_passwd:/opt/bitnami/pgpool/conf/pool_passwd
     depends_on:
       - postgres
     labels:

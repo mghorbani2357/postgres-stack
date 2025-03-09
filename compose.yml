@@ -16,15 +16,15 @@ services:
       file: ./postgres/compose.yml
       service: postgres_exporter
 
-  pgpool:
-    extends:
-      file: ./pgpool/compose.yml
-      service: pgpool
-
-  pgpool_exporter:
-    extends:
-      file: ./pgpool/compose.yml
-      service: pgpool_exporter
+#  pgpool:
+#    extends:
+#      file: ./pgpool/compose.yml
+#      service: pgpool
+#
+#  pgpool_exporter:
+#    extends:
+#      file: ./pgpool/compose.yml
+#      service: pgpool_exporter
 
   pgbouncer:
     extends:

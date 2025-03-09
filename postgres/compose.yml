@@ -1,12 +1,14 @@
 services:
   postgres:
-    image: postgres:${POSTGRES_VERSTION?}
+    image: postgres:${POSTGRES_VERSION?}
     container_name: postgres
     restart: unless-stopped
     user: "0:0"
     environment:
       POSTGRES_USER: ${POSTGRES_USER?}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD?}
+    healthcheck:
+      test: [ 'CMD', 'pg_isready', '-U', 'postgres' ]
     volumes:
       - ./data:/var/lib/postgresql/data
     networks:
